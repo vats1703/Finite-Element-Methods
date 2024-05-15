@@ -1,9 +1,18 @@
+"""
+This module includes functions that compute the finite element method given the number of divisions of the grid and the width and height of the rectangle.
+
+Functions:
+- plot_solution(X, Y, u_h): Plot the finite element solution.
+- FEM_solver(w, h, nx, ny, source_function): Solves a finite element problem using the FEM method.
+"""
+
 ## Raw Finite Element implementation  to solve Poisson equation in a 2D rectangular domain.
+
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
-import sys
-#sys.path.append('/Users/alex/Desktop/Finite Element Methods/')
 import mesh as mesh
 import basis as c_basis
 import basis_baryo as b_basis
@@ -15,7 +24,7 @@ import final_eval as final_eval
 
 
 
-def plot_solution(X,Y,u_h):
+def plot_solution(X_plot, Y_plot, xi):
     """
     Plot the finite element solution.
     
@@ -25,12 +34,13 @@ def plot_solution(X,Y,u_h):
         u_h (ndarray): The finite element solution.
     """
     plt.figure(figsize=(8, 8))
-    plt.tricontourf(X, Y, u_h.reshape(X.shape()), levels=20, cmap='viridis')
+    plt.contourf(X_plot, Y_plot, xi.reshape(X_plot.shape), levels = 10, cmap = 'viridis')
     plt.colorbar()
+    plt.axis('equal')
     plt.title('Finite Element Solution')
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.show()
+    plt.show()  
     return None 
 
 def FEM_solver(w, h, nx, ny, source_function):
@@ -49,10 +59,7 @@ def FEM_solver(w, h, nx, ny, source_function):
 
     """
     # Generate the mesh
-    nodes, triang_elements, num_nodes , num_elements, X, Y = mesh.generate_mesh(w, h, nx, ny)
-
-    # Plot the mesh and its triangles
-    mesh.plot_mesh(nodes, triang_elements)
+    nodes, triang_elements, num_nodes , num_elements, X_plot, Y_plot = mesh.generate_mesh(w, h, nx, ny)
 
     # Calculate the global stiffness matrix
     A_global = stiffness.calculate_global_stiffness(nodes, triang_elements, num_nodes, num_elements)
@@ -74,6 +81,5 @@ def FEM_solver(w, h, nx, ny, source_function):
     # Solve the linear system
     xi = spsolve(A_final, F_final)
     
-    # Plot the solution
-    plot_solution(X,Y,xi)
-    return  A_final, F_final
+
+    return  xi, nodes
