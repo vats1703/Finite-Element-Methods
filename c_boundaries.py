@@ -1,0 +1,57 @@
+
+import numpy as np
+from scipy.sparse import csr_matrix
+
+
+
+def identify_b_nodes_by_coord(nodes, bounds):
+    xmin, xmax, ymin, ymax = bounds
+    boundary_nodes = []
+    for idx, (x, y) in enumerate(nodes):
+        if x == xmin or x == xmax or y == ymin or y == ymax:
+            boundary_nodes.append(idx)
+    return boundary_nodes
+
+
+# Example usage
+def apply_dirichlet(A, F, boundary_conditions):
+    """
+    Apply Dirichlet boundary conditions to the stiffness matrix and load vector.
+    
+    Parameters:
+        A (ndarray): The global stiffness matrix.
+        F (ndarray): The global load vector.
+        boundary_conditions (dict): A dictionary where keys are the node indices
+                                    subject to Dirichlet conditions and values
+                                    are the prescribed values at these nodes.
+    Returns:
+        K_modified (ndarray): Modified global stiffness matrix.
+        F_modified (ndarray): Modified global load vector.
+    """
+    A_modified = A.copy()
+    F_modified = F.copy()
+    
+    for node_index in boundary_conditions:
+        # Set all entries in the row and column to zero
+        A_modified[node_index, :] = 0
+        A_modified[:, node_index] = 0
+        
+        # Set the diagonal entry for this node to 1
+        A_modified[node_index, node_index] = 1
+        
+        # Set the corresponding entry in the load vector to the prescribed value
+        F_modified[node_index] = 0
+    
+    return csr_matrix(A_modified), F_modified
+
+# Example usage
+# n_nodes = 5  # example number of nodes
+# K_global = np.random.rand(n_nodes, n_nodes)
+# F_global = np.random.rand(n_nodes)
+
+# # Boundary conditions, e.g., node 0 is set to 0, and node 4 is set to 1
+# boundary_conditions = {0: 0, 4: 1}
+
+# K_modified, F_modified = apply_dirichlet(K_global, F_global, boundary_conditions)
+# print("Modified Stiffness Matrix:\n", K_modified)
+# print("Modified Load Vector:\n", F_modified)
