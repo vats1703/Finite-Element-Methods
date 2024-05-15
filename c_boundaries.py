@@ -37,7 +37,7 @@ def apply_dirichlet(A, F, boundary_conditions):
                                     are the prescribed values at these nodes.
     
     Returns:
-        A_modified (ndarray): Modified global stiffness matrix in csr format. Useful for sparse matrices.
+        A_modified (csr_matrix): Modified global stiffness matrix in csr format. Useful for sparse matrices.
         F_modified (ndarray): Modified global load vector.
     """
     A_modified = A.copy()
@@ -56,14 +56,4 @@ def apply_dirichlet(A, F, boundary_conditions):
     
     return csr_matrix(A_modified), F_modified
 
-# Example usage
-# n_nodes = 5  # example number of nodes
-# K_global = np.random.rand(n_nodes, n_nodes)
-# F_global = np.random.rand(n_nodes)
 
-# # Boundary conditions, e.g., node 0 is set to 0, and node 4 is set to 1
-# boundary_conditions = {0: 0, 4: 1}
-
-# K_modified, F_modified = apply_dirichlet(K_global, F_global, boundary_conditions)
-# print("Modified Stiffness Matrix:\n", K_modified)
-# print("Modified Load Vector:\n", F_modified)

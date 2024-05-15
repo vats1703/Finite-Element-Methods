@@ -28,6 +28,8 @@ def generate_mesh(a, b, nx, ny):
     triangles (ndarray): N x 3 matrix of elements. Each row contains the indices of the nodes of a triangle.
     num_nodes (int): The number of nodes in the mesh.
     num_elements (int): The number of elements in the mesh.
+    X (ndarray): The X coordinates of the nodes in the mesh.
+    Y (ndarray): The Y coordinates of the nodes in the mesh.
     """
 
     # Generate a grid of points in x and y direction
@@ -35,7 +37,7 @@ def generate_mesh(a, b, nx, ny):
     y = np.linspace(0, b, ny + 1)
 
     # Generate the grid using meshgrid. 
-    X, Y = np.meshgrid(x, y)
+    X , Y = np.meshgrid(x, y)
 
     # Stack the x and y coordinates of the points to form a matrix. Each row is a (x,y) point on the mesh
     # We use ravel() in this case also flatten() works. But ravel() is faster since it creates a view of the original array.
@@ -57,7 +59,7 @@ def generate_mesh(a, b, nx, ny):
     num_nodes = len(nodes_pos)
     num_elements = len(triangles)
 
-    return nodes_pos, np.array(triangles), num_nodes, num_elements
+    return nodes_pos, np.array(triangles), num_nodes, num_elements, X , Y
 
 def plot_mesh(nodes, triang_elements):
     """    Plot the generated mesh.
