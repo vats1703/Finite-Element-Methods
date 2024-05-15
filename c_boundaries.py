@@ -5,6 +5,17 @@ from scipy.sparse import csr_matrix
 
 
 def identify_b_nodes_by_coord(nodes, bounds):
+    """
+    Identifies boundary nodes based on their coordinates.
+
+    Parameters:
+        nodes (ndarray)(N x 2): An array containing the coordinates of the triangle vertices in the form [[x1, y1], [x2, y2],...[ xn, yn]].
+        bounds (list): List containing the minimum and maximum values for x and y coordinates in the form (xmin, xmax, ymin, ymax).
+
+    Returns:
+        list: List of indices of the boundary nodes.
+
+    """
     xmin, xmax, ymin, ymax = bounds
     boundary_nodes = []
     for idx, (x, y) in enumerate(nodes):
@@ -13,7 +24,7 @@ def identify_b_nodes_by_coord(nodes, bounds):
     return boundary_nodes
 
 
-# Example usage
+
 def apply_dirichlet(A, F, boundary_conditions):
     """
     Apply Dirichlet boundary conditions to the stiffness matrix and load vector.
@@ -21,11 +32,12 @@ def apply_dirichlet(A, F, boundary_conditions):
     Parameters:
         A (ndarray): The global stiffness matrix.
         F (ndarray): The global load vector.
-        boundary_conditions (dict): A dictionary where keys are the node indices
+        boundary_conditions (list): A dictionary where keys are the node indices
                                     subject to Dirichlet conditions and values
                                     are the prescribed values at these nodes.
+    
     Returns:
-        K_modified (ndarray): Modified global stiffness matrix.
+        A_modified (ndarray): Modified global stiffness matrix in csr format. Useful for sparse matrices.
         F_modified (ndarray): Modified global load vector.
     """
     A_modified = A.copy()

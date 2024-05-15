@@ -1,11 +1,11 @@
 import numpy as np
-# Compute basis functions
+# Compute basis functions cartesian. (Needs to be improved)
 
 
-def compute_basis_functions(points, k_triangle):
+def compute_basis_functions_cart(el_nodes, point_x, point_y):
     # k_triangle contains the index of the nodes for each triangle
     # Extract vertices of each triangle 
-    x1, y1 ,x2, y2, x3,y3 = points[k_triangle].flatten()
+    x1, y1 ,x2, y2, x3,y3 = el_nodes.flatten()
     # x2, y2 = points[triangle[1]]
     # x3, y3 = points[triangle[2]]
     
@@ -15,11 +15,12 @@ def compute_basis_functions(points, k_triangle):
                   [1, x3, y3]])
     
     # Inverse of matrix A to calculate the coefficients of the basis functions 
-    A_inv = np.linalg.inv(A)
+    coeffs = np.linalg.inv(A)
     
     # Coefficients for the basis functions
-    # Each column of A_inv corresponds to the coefficients of one basis function
-    return A_inv
+    # Each column of coeffs corresponds to the coefficients of one basis function
+    # coeffs are a_1, b_1, c_1 for N_1, a_2, b_2, c_2 for N_2, a_3, b_3, c_3 for N_3
+    return coeffs
 
 def evaluate_basis_function(coeffs, x, y):
     # coeffs is one column of A_inv
