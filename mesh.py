@@ -37,11 +37,11 @@ def generate_mesh(a, b, nx, ny):
     y = np.linspace(0, b, ny + 1)
 
     # Generate the grid using meshgrid. 
-    X , Y = np.meshgrid(x, y)
+    X_plot , Y_plot = np.meshgrid(x, y)
 
     # Stack the x and y coordinates of the points to form a matrix. Each row is a (x,y) point on the mesh
     # We use ravel() in this case also flatten() works. But ravel() is faster since it creates a view of the original array.
-    nodes_pos = np.vstack([X.ravel(), Y.ravel()]).T  # N x 2 matrix of nodes positions
+    nodes_pos = np.vstack([X_plot.ravel(), Y_plot.ravel()]).T  # N x 2 matrix of nodes positions
 
     triangles = []  # N x 3 matrix of elements
     for j in range(ny):
@@ -59,7 +59,7 @@ def generate_mesh(a, b, nx, ny):
     num_nodes = len(nodes_pos)
     num_elements = len(triangles)
 
-    return nodes_pos, np.array(triangles), num_nodes, num_elements, X , Y
+    return nodes_pos, np.array(triangles), num_nodes, num_elements, X_plot , Y_plot
 
 def plot_mesh(nodes, triang_elements):
     """    Plot the generated mesh.
@@ -71,11 +71,11 @@ def plot_mesh(nodes, triang_elements):
     Returns:
     None
     """
-    plt.figure(figsize=(8, 4))
-    plt.triplot(nodes[:, 0], nodes[:, 1], triang_elements, 'k.-')
+    plt.figure()
+    plt.triplot(nodes[:,0], nodes[:,1], triang_elements, 'k.-')
     plt.gca().set_aspect('equal')
-    plt.title('Finite Element Mesh for our rectangle')
+    plt.title('Triangular Mesh for $\Omega$')
     plt.xlabel('x')
-    plt.ylabel('y[x]')
+    plt.ylabel('y')
     plt.show()
     return None

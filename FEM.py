@@ -33,11 +33,11 @@ def plot_solution(X_plot, Y_plot, xi):
         Y (ndarray): The Y coordinates of the nodes in the mesh.
         u_h (ndarray): The finite element solution.
     """
-    plt.figure(figsize=(8, 8))
-    plt.contourf(X_plot, Y_plot, xi.reshape(X_plot.shape), levels = 10, cmap = 'viridis')
+    plt.figure()
+    plt.contourf(X_plot, Y_plot, xi.reshape(X_plot.shape), levels = 10, cmap = 'inferno')
     plt.colorbar()
     plt.axis('equal')
-    plt.title('Finite Element Solution')
+    plt.title('FE Solution $u_h(x,y)$')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.show()  
